@@ -4,7 +4,7 @@ import { db } from "../lib/firebase";
 import { HeroSlider } from "../components/HeroSlider";
 import { ContactForm } from "../components/ContactForm";
 import { Reviews } from "../components/Reviews";
-import { MapPin, Mail, Phone, Calendar, Play, Pause, Volume2, VolumeX, Heart, Leaf, Puzzle, MonitorPlay, PiggyBank, Globe, Dumbbell, Palette, GraduationCap, X } from "lucide-react";
+import { MapPin, Mail, Phone, Calendar, Play, Pause, Volume2, VolumeX, Heart, Leaf, Puzzle, MonitorPlay, PiggyBank, Globe, Dumbbell, Palette, GraduationCap, X, MessageCircle } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import misionValoresVideo from "../assets/videos/mision_valores.mp4";
@@ -29,7 +29,6 @@ interface GalleryItem {
 
 export function Home() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [isVideoHovered, setIsVideoHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -80,18 +79,8 @@ export function Home() {
       setAnnouncements(data);
     });
 
-    const qGallery = query(collection(db, "gallery"), orderBy("createdAt", "desc"));
-    const unsubGallery = onSnapshot(qGallery, (snapshot) => {
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as GalleryItem[];
-      setGallery(data);
-    });
-
     return () => {
       unsubAnnouncements();
-      unsubGallery();
     };
   }, []);
 
@@ -118,7 +107,16 @@ export function Home() {
                 {format(new Date(activePopup.date), "d MMM yyyy", { locale: es })}
               </div>
               <h3 className="text-[#333333] font-bold text-2xl mb-4">{activePopup.title}</h3>
-              <div className="text-gray-600 text-sm leading-relaxed quill-content" dangerouslySetInnerHTML={{ __html: activePopup.content }} />
+              <div className="text-gray-600 text-sm leading-relaxed quill-content mb-6" dangerouslySetInnerHTML={{ __html: activePopup.content }} />
+              <a 
+                href={`https://wa.me/5492214288051?text=Hola!%20Me%20gustaría%20consultar%20sobre:%20${encodeURIComponent(activePopup.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-[#22543d] hover:bg-[#183c2b] text-white text-sm font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Consultar por WhatsApp
+              </a>
             </div>
           </div>
         </div>
@@ -284,7 +282,16 @@ export function Home() {
                       {format(new Date(announcement.date), "d MMM yyyy", { locale: es })}
                     </div>
                     <h3 className="text-[#333333] font-bold text-base mb-2">{announcement.title}</h3>
-                    <div className="text-gray-600 text-xs flex-1 leading-relaxed quill-content line-clamp-4" dangerouslySetInnerHTML={{ __html: announcement.content }} />
+                    <div className="text-gray-600 text-xs flex-1 leading-relaxed quill-content line-clamp-4 mb-4" dangerouslySetInnerHTML={{ __html: announcement.content }} />
+                    <a 
+                      href={`https://wa.me/5492214288051?text=Hola!%20Me%20gustaría%20consultar%20sobre:%20${encodeURIComponent(announcement.title)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto bg-[#22543d] hover:bg-[#183c2b] text-white text-xs font-bold py-2 px-4 rounded transition-colors flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Consultar por WhatsApp
+                    </a>
                   </div>
                 </div>
               ))}
@@ -302,16 +309,6 @@ export function Home() {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {gallery.map((item) => (
-              <div key={item.id} className="aspect-square rounded overflow-hidden group relative bg-gray-100 border border-gray-200 shadow-sm">
-                <img src={item.imageUrl} alt={item.caption || "Galería"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" />
-                {item.caption && (
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white text-xs font-medium">{item.caption}</p>
-                  </div>
-                )}
-              </div>
-            ))}
             {staticGalleryImages.map((src, idx) => (
               <div key={`static-${idx}`} className="aspect-square rounded overflow-hidden group relative bg-gray-100 border border-gray-200 shadow-sm">
                 <img src={src} alt="Galería" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" />

@@ -60,14 +60,8 @@ export function Admin() {
   const [uploadingA, setUploadingA] = useState(false);
   const [editingAnnouncementId, setEditingAnnouncementId] = useState<string | null>(null);
 
-  const [galleryUrl, setGalleryUrl] = useState("");
-  const [galleryFile, setGalleryFile] = useState<File | null>(null);
-  const [galleryCaption, setGalleryCaption] = useState("");
-  const [uploadingG, setUploadingG] = useState(false);
-
   // Data
   const [announcements, setAnnouncements] = useState<any[]>([]);
-  const [gallery, setGallery] = useState<any[]>([]);
 
   useEffect(() => {
     // Only load if authenticated
@@ -75,11 +69,8 @@ export function Admin() {
     
     const qA = query(collection(db, "announcements"), orderBy("date", "desc"));
     const unsubA = onSnapshot(qA, (snap) => setAnnouncements(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
-    
-    const qG = query(collection(db, "gallery"), orderBy("createdAt", "desc"));
-    const unsubG = onSnapshot(qG, (snap) => setGallery(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
 
-    return () => { unsubA(); unsubG(); };
+    return () => { unsubA(); };
   }, [isAuthenticated]);
 
   const handleAuth = async (e: React.FormEvent) => {
@@ -175,36 +166,6 @@ export function Admin() {
     }
   };
 
-  const handleAddGallery = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!galleryFile && !galleryUrl) {
-      alert("Por favor selecciona una imagen o ingresa una URL");
-      return;
-    }
-    setUploadingG(true);
-    try {
-      let finalUrl = galleryUrl;
-      if (galleryFile) {
-        finalUrl = await compressImage(galleryFile);
-      }
-
-      await addDoc(collection(db, "gallery"), {
-        imageUrl: finalUrl,
-        caption: galleryCaption,
-        createdAt: Date.now()
-      });
-      setGalleryUrl("");
-      setGalleryCaption("");
-      setGalleryFile(null);
-      alert("Imagen agregada exitosamente");
-    } catch (err) {
-      console.error(err);
-      alert("Error al agregar imagen.");
-    } finally {
-      setUploadingG(false);
-    }
-  };
-
   const handleDelete = async (collectionName: string, id: string) => {
     if (!confirm("¿Estás seguro de eliminar este elemento?")) return;
     try {
@@ -268,7 +229,7 @@ export function Admin() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-8">
         
         {/* Anuncios Manager */}
         <section className="space-y-6">
@@ -349,56 +310,6 @@ export function Admin() {
                 </div>
               ))}
               {announcements.length === 0 && <p className="text-sm text-slate-500 text-center py-4">No hay anuncios</p>}
-            </div>
-          </div>
-        </section>
-
-        {/* Galeria Manager */}
-        <section className="space-y-6">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <div className="flex items-center gap-2 mb-6 text-green-700">
-              <ImageIcon className="w-6 h-6" />
-              <h2 className="text-xl font-bold">Agregar a Galería</h2>
-            </div>
-            
-            <form onSubmit={handleAddGallery} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Subir Imagen</label>
-                <input type="file" accept="image/*" onChange={e => setGalleryFile(e.target.files?.[0] || null)} className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800" />
-              </div>
-              <div className="flex items-center gap-2">
-                <hr className="flex-1" />
-                <span className="text-xs text-slate-400">O ingresar URL</span>
-                <hr className="flex-1" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">URL de la Imagen (Si no subes archivo)</label>
-                <input type="url" value={galleryUrl} onChange={e => setGalleryUrl(e.target.value)} placeholder="https://..." className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 outline-none" disabled={!!galleryFile} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Descripción corta (Opcional)</label>
-                <input type="text" value={galleryCaption} onChange={e => setGalleryCaption(e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 outline-none" />
-              </div>
-              <button type="submit" disabled={uploadingG} className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70">
-                {uploadingG ? "Subiendo..." : <><Upload className="w-4 h-4" /> Agregar Imagen</>}
-              </button>
-            </form>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <h3 className="font-bold text-slate-800 mb-4">Imágenes en Galería</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto pr-2">
-              {gallery.map(g => (
-                <div key={g.id} className="relative group aspect-square rounded-lg overflow-hidden bg-slate-100">
-                  <img src={g.imageUrl} alt={g.caption} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button onClick={() => handleDelete("gallery", g.id)} className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-              {gallery.length === 0 && <p className="text-sm text-slate-500 text-center py-4 col-span-2">No hay imágenes</p>}
             </div>
           </div>
         </section>

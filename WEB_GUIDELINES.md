@@ -36,4 +36,13 @@ Este documento recopila las mejores prácticas, directrices de estructura y requ
 ## 5. Diseño UI y Estilos
 *   **Iconografía:** Utilizar siempre librerías consistentes y modernas, preferentemente `lucide-react`.
 *   **Animaciones:** Utilizar transiciones suaves para el *hover* de botones e imágenes (ej. escalas sutiles `hover:scale-105 duration-700` en galerías).
-*   **Responsive Design:** Garantizar que los componentes de navegación (menús hamburguesa) y visualización de recursos (sliders, grillas de galería) se adapten usando el esquema Mobile-First de Tailwind (`md:`, `lg:`).
+*   **Responsive Design:** Garantizar que los componentes de navegación y visualización de recursos (sliders, grillas de galería) se adapten usando el esquema Mobile-First de Tailwind (`md:`, `lg:`).
+
+## 6. Experiencia Móvil Tipo App y Header con Reducción en Scroll
+*   **Header con Reducción en Scroll:**
+    *   La cabecera superior debe contraerse suavemente al hacer scroll hacia abajo (`isScrolled`), reduciendo la altura (`h-24` -> `h-16`) y la escala del logo para maximizar el área de lectura sin perder el acceso a la navegación.
+*   **Barra de Navegación Inferior (Mobile Bottom Navigation Bar):**
+    *   En dispositivos móviles (`md:hidden`), implementar una barra inferior fija (`fixed bottom-0 left-0 right-0`) estilo App nativa con fondo traslúcido (`bg-white/95 backdrop-blur-lg`).
+    *   Incluir accesos directos con iconos claros (Colegio, Propuesta, Anuncios con indicador de actividad, Galería y WhatsApp/Contacto).
+    *   Acompañar con un Bottom Sheet / Menú inferior deslizable para acciones rápidas de contacto directo (Jardín, Primaria, Ubicación y Formulario).
+

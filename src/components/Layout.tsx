@@ -2,13 +2,26 @@ import { Outlet, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { collection, onSnapshot, query, limit } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { Lock } from "lucide-react";
+import { 
+  Lock, 
+  GraduationCap, 
+  Sparkles, 
+  Bell, 
+  Images, 
+  MessageCircle, 
+  X, 
+  MapPin, 
+  Phone,
+  ArrowUpRight
+} from "lucide-react";
 import logoImage from "../assets/images/logo_h.svg";
 
 export function Layout() {
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("institucional");
   const [hasAnnouncements, setHasAnnouncements] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isWaMenuOpen, setIsWaMenuOpen] = useState(false);
+  const [isMobileContactSheetOpen, setIsMobileContactSheetOpen] = useState(false);
 
   useEffect(() => {
     const q = query(collection(db, "announcements"), limit(1));
@@ -20,52 +33,129 @@ export function Layout() {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Toggle compact header on scroll
+      if (window.scrollY > 30) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+
       const sections = ["institucional", "propuesta", "anuncios", "galeria", "contacto"];
-      const scrollPosition = window.scrollY + 120; // Offset for header
+      const scrollPosition = window.scrollY + 140; // Offset for header
 
       for (const section of sections) {
         const element = document.getElementById(section);
-        if (element && element.offsetTop <= scrollPosition && (element.offsetTop + element.offsetHeight) > scrollPosition) {
-          setActiveSection(section);
+        if (element) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (top <= scrollPosition && top + height > scrollPosition) {
+            setActiveSection(section);
+          }
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNavClick = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const yOffset = -90;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
 
   const getNavLinkClass = (section: string) => 
     `px-4 py-2 rounded-lg font-bold transition-all duration-200 active:scale-95 ${
       activeSection === section 
-        ? "bg-[#22543d] text-white shadow-md" 
-        : "text-[#777777] hover:text-[#22543d] hover:bg-green-50"
+        ? "bg-[#22543d] text-white shadow-sm" 
+        : "text-[#555555] hover:text-[#22543d] hover:bg-green-50/80"
     }`;
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-[#333333] bg-[#f9fafb]">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-24 flex items-center justify-between">
-          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2">
-            <img src={logoImage} alt="Los Ceibos" className="h-20 object-contain" />
+    <div className="min-h-screen flex flex-col font-sans text-[#333333] bg-[#f9fafb] pb-16 md:pb-0">
+      {/* Top Header - Responsive & Shrinks on scroll */}
+      <header 
+        className={`bg-white/95 backdrop-blur-md border-b border-gray-200/80 sticky top-0 z-40 transition-all duration-300 ${
+          isScrolled ? "h-16 shadow-md" : "h-20 md:h-24 shadow-sm"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+          <Link 
+            to="/" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+            className="flex items-center gap-2 transition-transform duration-300 hover:opacity-90"
+            aria-label="Ir al inicio"
+          >
+            <img 
+              src={logoImage} 
+              alt="Los Ceibos" 
+              className={`object-contain transition-all duration-300 ${
+                isScrolled ? "h-10 md:h-12" : "h-12 md:h-16"
+              }`} 
+            />
           </Link>
           
-          <nav className="hidden md:flex items-center gap-2 text-base">
-            <a href="#institucional" className={getNavLinkClass("institucional")}>Institucional</a>
-            <a href="#propuesta" className={getNavLinkClass("propuesta")}>Propuesta</a>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1.5 text-sm lg:text-base">
+            <button 
+              onClick={() => handleNavClick("institucional")} 
+              className={getNavLinkClass("institucional")}
+            >
+              Institucional
+            </button>
+            <button 
+              onClick={() => handleNavClick("propuesta")} 
+              className={getNavLinkClass("propuesta")}
+            >
+              Propuesta
+            </button>
             {hasAnnouncements && (
-              <a href="#anuncios" className={getNavLinkClass("anuncios")}>Anuncios</a>
+              <button 
+                onClick={() => handleNavClick("anuncios")} 
+                className={`${getNavLinkClass("anuncios")} relative`}
+              >
+                Anuncios
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+              </button>
             )}
-            <a href="#galeria" className={getNavLinkClass("galeria")}>Galería</a>
-            <a href="#contacto" className={getNavLinkClass("contacto")}>Contacto</a>
+            <button 
+              onClick={() => handleNavClick("galeria")} 
+              className={getNavLinkClass("galeria")}
+            >
+              Galería
+            </button>
+            <button 
+              onClick={() => handleNavClick("contacto")} 
+              className={getNavLinkClass("contacto")}
+            >
+              Contacto
+            </button>
           </nav>
+
+          {/* Mobile Top Quick Action */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={() => setIsMobileContactSheetOpen(true)}
+              className="bg-[#22543d] text-white px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-transform"
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>Contactar</span>
+            </button>
+          </div>
         </div>
       </header>
 
+      {/* Main Content */}
       <main className="flex-1 flex flex-col">
         <Outlet />
       </main>
 
+      {/* Footer */}
       <footer className="h-auto md:h-20 py-4 bg-white border-t border-gray-100 flex flex-col md:flex-row items-center justify-between px-8 text-[10px] text-[#777777] font-medium flex-shrink-0">
         <div className="flex items-center gap-4 mb-2 md:mb-0">
           <span>© {new Date().getFullYear()} Instituto Educativo Los Ceibos. Todos los derechos reservados.</span>
@@ -80,7 +170,8 @@ export function Layout() {
         </div>
       </footer>
 
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+      {/* Desktop Floating WhatsApp Button */}
+      <div className="hidden md:flex fixed bottom-6 right-6 z-50 flex-col items-end gap-2">
         {isWaMenuOpen && (
           <div className="flex flex-col gap-2 mb-1 animate-in slide-in-from-bottom-2 fade-in duration-200">
             <a
@@ -118,6 +209,175 @@ export function Layout() {
           </svg>
         </button>
       </div>
+
+      {/* MOBILE APP-LIKE BOTTOM NAVIGATION BAR */}
+      <nav 
+        aria-label="Navegación móvil"
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/90 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] px-2 py-1.5 flex items-center justify-around"
+      >
+        <button
+          onClick={() => handleNavClick("institucional")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
+            activeSection === "institucional"
+              ? "text-[#22543d] font-bold scale-105"
+              : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeSection === "institucional" ? "bg-green-100/70" : ""}`}>
+            <GraduationCap className="w-5 h-5" />
+          </div>
+          <span className="text-[10px] mt-0.5 tracking-tight">Colegio</span>
+        </button>
+
+        <button
+          onClick={() => handleNavClick("propuesta")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
+            activeSection === "propuesta"
+              ? "text-[#22543d] font-bold scale-105"
+              : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeSection === "propuesta" ? "bg-green-100/70" : ""}`}>
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <span className="text-[10px] mt-0.5 tracking-tight">Propuesta</span>
+        </button>
+
+        {hasAnnouncements && (
+          <button
+            onClick={() => handleNavClick("anuncios")}
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 relative ${
+              activeSection === "anuncios"
+                ? "text-[#22543d] font-bold scale-105"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div className={`p-1 rounded-lg ${activeSection === "anuncios" ? "bg-green-100/70" : ""}`}>
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1.5 right-3 w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+              <span className="absolute top-1.5 right-3 w-2 h-2 bg-emerald-500 rounded-full"></span>
+            </div>
+            <span className="text-[10px] mt-0.5 tracking-tight">Anuncios</span>
+          </button>
+        )}
+
+        <button
+          onClick={() => handleNavClick("galeria")}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
+            activeSection === "galeria"
+              ? "text-[#22543d] font-bold scale-105"
+              : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeSection === "galeria" ? "bg-green-100/70" : ""}`}>
+            <Images className="w-5 h-5" />
+          </div>
+          <span className="text-[10px] mt-0.5 tracking-tight">Galería</span>
+        </button>
+
+        <button
+          onClick={() => setIsMobileContactSheetOpen(true)}
+          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
+            isMobileContactSheetOpen || activeSection === "contacto"
+              ? "text-[#22543d] font-bold scale-105"
+              : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          <div className={`p-1 rounded-lg bg-emerald-600 text-white shadow-sm`}>
+            <MessageCircle className="w-5 h-5" />
+          </div>
+          <span className="text-[10px] mt-0.5 font-semibold text-[#22543d] tracking-tight">WhatsApp</span>
+        </button>
+      </nav>
+
+      {/* MOBILE BOTTOM SHEET FOR CONTACT & APP ACTIONS */}
+      {isMobileContactSheetOpen && (
+        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 backdrop-blur-sm animate-in fade-in duration-200 md:hidden">
+          <div 
+            className="w-full bg-white rounded-t-3xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 pb-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-[#22543d]">
+                  <MessageCircle className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 text-base">Contacto Los Ceibos</h3>
+                  <p className="text-xs text-gray-500">Elegí tu canal de atención directa</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsMobileContactSheetOpen(false)}
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"
+                aria-label="Cerrar menú"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <a
+                href="https://wa.me/5492214288051?text=Hola!%20Me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20nivel%20Jard%C3%ADn."
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileContactSheetOpen(false)}
+                className="flex items-center justify-between p-3.5 bg-emerald-50/70 hover:bg-emerald-100/80 rounded-2xl border border-emerald-200/60 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🎨</span>
+                  <div className="text-left">
+                    <div className="font-bold text-sm text-[#22543d]">Consulta Nivel Jardín</div>
+                    <div className="text-xs text-gray-600">Sala de 1, 2, 3, 4 y 5 años</div>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-5 h-5 text-emerald-700" />
+              </a>
+
+              <a
+                href="https://wa.me/5492216807128?text=Hola!%20Me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20nivel%20Primaria."
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileContactSheetOpen(false)}
+                className="flex items-center justify-between p-3.5 bg-emerald-50/70 hover:bg-emerald-100/80 rounded-2xl border border-emerald-200/60 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">📚</span>
+                  <div className="text-left">
+                    <div className="font-bold text-sm text-[#22543d]">Consulta Nivel Primario</div>
+                    <div className="text-xs text-gray-600">Jornada Doble Turno e Idiomas</div>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-5 h-5 text-emerald-700" />
+              </a>
+
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <a
+                  href="https://maps.app.goo.gl/uX3L3gP7sF62N66r7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 p-3 bg-gray-50 hover:bg-gray-100 rounded-xl text-xs font-semibold text-gray-700 border border-gray-200 transition-colors"
+                >
+                  <MapPin className="w-4 h-4 text-[#9b1c1c]" />
+                  <span>Cómo llegar</span>
+                </a>
+
+                <button
+                  onClick={() => {
+                    setIsMobileContactSheetOpen(false);
+                    handleNavClick("contacto");
+                  }}
+                  className="flex items-center justify-center gap-2 p-3 bg-gray-50 hover:bg-gray-100 rounded-xl text-xs font-semibold text-gray-700 border border-gray-200 transition-colors"
+                >
+                  <Phone className="w-4 h-4 text-[#22543d]" />
+                  <span>Formulario</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
