@@ -156,10 +156,22 @@ export function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="h-auto md:h-20 py-4 bg-white border-t border-gray-100 flex flex-col md:flex-row items-center justify-between px-8 text-[10px] text-[#777777] font-medium flex-shrink-0">
-        <div className="flex items-center gap-4 mb-2 md:mb-0">
+      <footer className="h-auto md:h-20 py-4 bg-white border-t border-gray-100 flex flex-col md:flex-row items-center justify-between px-8 text-[10px] text-[#777777] font-medium flex-shrink-0 gap-2 md:gap-0">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-1 md:mb-0">
           <span>© {new Date().getFullYear()} Instituto Educativo Los Ceibos. Todos los derechos reservados.</span>
-          <Link to="/admin" className="opacity-0 hover:opacity-100 p-2 text-gray-400 hover:text-[#333333] transition-all duration-300" aria-label="Acceso Admin">
+          <span className="hidden md:inline text-gray-300">•</span>
+          <span className="text-gray-400">
+            By{" "}
+            <a 
+              href="https://unke.com.ar/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-gray-500 hover:text-[#22543d] font-semibold transition-colors hover:underline"
+            >
+              unke.com.ar
+            </a>
+          </span>
+          <Link to="/admin" className="opacity-0 hover:opacity-100 p-1 text-gray-400 hover:text-[#333333] transition-all duration-300" aria-label="Acceso Admin">
             <Lock className="w-3 h-3" />
           </Link>
         </div>

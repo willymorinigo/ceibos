@@ -1,10 +1,33 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { HeroSlider } from "../components/HeroSlider";
 import { ContactForm } from "../components/ContactForm";
 import { Reviews } from "../components/Reviews";
-import { MapPin, Mail, Phone, Calendar, Play, Pause, Volume2, VolumeX, Heart, Leaf, Puzzle, MonitorPlay, PiggyBank, Globe, Dumbbell, Palette, GraduationCap, X, MessageCircle } from "lucide-react";
+import { 
+  MapPin, 
+  Mail, 
+  Phone, 
+  Calendar, 
+  Play, 
+  Pause, 
+  Volume2, 
+  VolumeX, 
+  Heart, 
+  Leaf, 
+  Puzzle, 
+  MonitorPlay, 
+  PiggyBank, 
+  Globe, 
+  Dumbbell, 
+  Palette, 
+  GraduationCap, 
+  X, 
+  MessageCircle,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn
+} from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import misionValoresVideo from "../assets/videos/mision_valores.mp4";
@@ -20,13 +43,6 @@ interface Announcement {
   isPopup?: boolean;
 }
 
-interface GalleryItem {
-  id: string;
-  imageUrl: string;
-  caption?: string;
-  createdAt: number;
-}
-
 export function Home() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isVideoHovered, setIsVideoHovered] = useState(false);
@@ -35,6 +51,74 @@ export function Home() {
   const [isMuted, setIsMuted] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [activePopup, setActivePopup] = useState<Announcement | null>(null);
+
+  // Gallery Lightbox State
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchEndXRef = useRef<number | null>(null);
+
+  const openLightbox = (index: number) => {
+    setSelectedImageIndex(index);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeLightbox = useCallback(() => {
+    setSelectedImageIndex(null);
+    document.body.style.overflow = "unset";
+  }, []);
+
+  const nextImage = useCallback(() => {
+    setSelectedImageIndex((prev) => {
+      if (prev === null) return null;
+      return (prev + 1) % staticGalleryImages.length;
+    });
+  }, []);
+
+  const prevImage = useCallback(() => {
+    setSelectedImageIndex((prev) => {
+      if (prev === null) return null;
+      return (prev - 1 + staticGalleryImages.length) % staticGalleryImages.length;
+    });
+  }, []);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (selectedImageIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImageIndex, closeLightbox, nextImage, prevImage]);
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.targetTouches[0].clientX;
+    touchEndXRef.current = null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndXRef.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartXRef.current || !touchEndXRef.current) return;
+    const distance = touchStartXRef.current - touchEndXRef.current;
+    const isSwipe = Math.abs(distance) > 40;
+    if (isSwipe) {
+      if (distance > 0) {
+        nextImage(); // Swiped left -> next image
+      } else {
+        prevImage(); // Swiped right -> prev image
+      }
+    }
+    touchStartXRef.current = null;
+    touchEndXRef.current = null;
+  };
 
   useEffect(() => {
     const popup = announcements.find((a) => a.isPopup);
@@ -305,18 +389,128 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-8">
           <div className="mb-12">
             <h2 className="text-[#22543d] font-bold uppercase tracking-wider text-2xl mb-4 border-l-4 border-[#9b1c1c] pl-3">Galería de Imágenes</h2>
-            <p className="text-sm text-gray-600">Un recorrido visual por las actividades de nuestros alumnos.</p>
+            <p className="text-sm text-gray-600">Un recorrido visual por las actividades de nuestros alumnos. Tocá cualquier foto para ampliar.</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {staticGalleryImages.map((src, idx) => (
-              <div key={`static-${idx}`} className="aspect-square rounded overflow-hidden group relative bg-gray-100 border border-gray-200 shadow-sm">
-                <img src={src} alt="Galería" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" />
-              </div>
+              <button 
+                key={`static-${idx}`} 
+                onClick={() => openLightbox(idx)}
+                aria-label={`Ver foto ${idx + 1} ampliada`}
+                className="aspect-square rounded-xl overflow-hidden group relative bg-gray-100 border border-gray-200 shadow-sm text-left focus:outline-none focus:ring-2 focus:ring-[#22543d] transition-all"
+              >
+                <img 
+                  src={src} 
+                  alt={`Galería foto ${idx + 1}`} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" 
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="bg-white/90 text-gray-800 p-2.5 rounded-full shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <ZoomIn className="w-5 h-5" />
+                  </div>
+                </div>
+              </button>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Gallery Lightbox Modal with Infinite Loop Navigation */}
+      {selectedImageIndex !== null && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/65 backdrop-blur-lg flex flex-col items-center justify-between p-3 md:p-6 animate-in fade-in duration-200 select-none touch-none"
+          onClick={closeLightbox}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Top Bar: Counter & Close Button */}
+          <div 
+            className="w-full max-w-6xl flex items-center justify-between z-20 pt-1 px-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-white/15 backdrop-blur-md text-white text-xs md:text-sm font-semibold px-4 py-1.5 rounded-full border border-white/20 shadow-sm">
+              Foto {selectedImageIndex + 1} de {staticGalleryImages.length}
+            </div>
+
+            <button 
+              onClick={closeLightbox}
+              className="bg-white/20 hover:bg-white/30 text-white p-2.5 rounded-full transition-all duration-200 border border-white/20 shadow-lg active:scale-95"
+              aria-label="Cerrar galería ampliada"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Center Display: Previous Button, Active Image, Next Button */}
+          <div className="relative w-full flex-1 flex items-center justify-center px-1 md:px-12 my-auto">
+            {/* Prev Button (Looping) */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevImage();
+              }}
+              className="absolute left-2 md:left-6 z-20 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm border border-white/10 shadow-xl transition-all active:scale-90 hover:scale-105"
+              aria-label="Foto anterior"
+            >
+              <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+            </button>
+
+            {/* Main Image */}
+            <div 
+              className="relative max-w-5xl max-h-[75vh] md:max-h-[80vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img 
+                key={selectedImageIndex}
+                src={staticGalleryImages[selectedImageIndex]} 
+                alt={`Galería foto ampliada ${selectedImageIndex + 1}`} 
+                className="max-h-[75vh] md:max-h-[80vh] max-w-[90vw] md:max-w-4xl w-auto h-auto object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-200"
+              />
+            </div>
+
+            {/* Next Button (Looping) */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextImage();
+              }}
+              className="absolute right-2 md:right-6 z-20 bg-black/50 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm border border-white/10 shadow-xl transition-all active:scale-90 hover:scale-105"
+              aria-label="Foto siguiente"
+            >
+              <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+            </button>
+          </div>
+
+          {/* Bottom Bar: Thumbnails preview & Hints */}
+          <div 
+            className="w-full max-w-3xl flex flex-col items-center gap-2 z-20 pb-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-1.5 overflow-x-auto max-w-full px-4 py-1.5 scrollbar-none">
+              {staticGalleryImages.map((thumbSrc, idx) => (
+                <button
+                  key={`thumb-${idx}`}
+                  onClick={() => setSelectedImageIndex(idx)}
+                  className={`relative flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                    selectedImageIndex === idx 
+                      ? "border-emerald-400 scale-110 shadow-md ring-2 ring-emerald-400/40" 
+                      : "border-white/30 opacity-60 hover:opacity-100"
+                  }`}
+                  aria-label={`Ir a la foto ${idx + 1}`}
+                >
+                  <img src={thumbSrc} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] text-gray-400 hidden md:block">
+              Navegá con las flechas del teclado (← / →) o en loop con los botones · Tocá afuera o presiona Esc para cerrar
+            </p>
+          </div>
+        </div>
+      )}
 
       <Reviews />
       

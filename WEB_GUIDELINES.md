@@ -46,3 +46,15 @@ Este documento recopila las mejores prácticas, directrices de estructura y requ
     *   Incluir accesos directos con iconos claros (Colegio, Propuesta, Anuncios con indicador de actividad, Galería y WhatsApp/Contacto).
     *   Acompañar con un Bottom Sheet / Menú inferior deslizable para acciones rápidas de contacto directo (Jardín, Primaria, Ubicación y Formulario).
 
+## 7. Galería Interactiva (Lightbox / Popup con Navegación en Loop)
+*   **Apertura y Animación:** Al tocar o hacer clic en cualquier miniatura de la galería, debe abrirse un modal/lightbox con fondo oscurecido traslúcido y desenfoque profundo (`bg-black/65 backdrop-blur-lg`) para que la página de fondo permanezca sutilmente visible con efecto de vidrio esmerilado, acompañado de una animación suave de entrada (`animate-in fade-in zoom-in-95 duration-200`).
+*   **Navegación Cíclica en Loop:** Los controles previo y siguiente deben permitir navegar de forma continua e infinita entre las imágenes (`(index ± 1 + total) % total`).
+*   **Múltiples Formas de Cierre y Navegación:**
+    *   Cierre mediante botón flotante 'X', presionar la tecla `Escape` o hacer clic/toque en cualquier zona del fondo fuera de la foto (`onClick={closeLightbox}`).
+    *   Navegación con flechas del teclado (`ArrowLeft` / `ArrowRight`) en escritorio.
+    *   Gestos táctiles de deslizamiento (*swipe* izquierda/derecha) en dispositivos móviles.
+    *   Contador superior de fotos (`Foto X de N`) y tira inferior de miniaturas para salto rápido.
+
+## 8. Créditos y Firma de Autoría en Footer
+*   **Firma Discreta:** En el pie de página (`footer`), junto a los derechos reservados, incorporar de forma sutil el enlace de autoría (ej. `By unke.com.ar` enlazado a `https://unke.com.ar/`) con tipografía discreta, transición de color en hover y apertura segura en nueva pestaña (`target="_blank" rel="noopener noreferrer"`).
+
