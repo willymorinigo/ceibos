@@ -2,6 +2,7 @@ import { Outlet, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { collection, onSnapshot, query, limit } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import { Preloader } from "./Preloader";
 import { 
   Lock, 
   GraduationCap, 
@@ -18,17 +19,61 @@ import logoImage from "../assets/images/logo_h.svg";
 
 export function Layout() {
   const [activeSection, setActiveSection] = useState("institucional");
-  const [hasAnnouncements, setHasAnnouncements] = useState(false);
+  const [hasAnnouncements, setHasAnnouncements] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("ceibos_has_announcements") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isWaMenuOpen, setIsWaMenuOpen] = useState(false);
   const [isMobileContactSheetOpen, setIsMobileContactSheetOpen] = useState(false);
 
   useEffect(() => {
     const q = query(collection(db, "announcements"), limit(1));
-    const unsub = onSnapshot(q, (snapshot) => {
-      setHasAnnouncements(!snapshot.empty);
-    });
-    return () => unsub();
+    let isMounted = true;
+
+    // Minimum display time for preloader (450ms) to ensure smooth layout initialization
+    const minTimer = new Promise((resolve) => setTimeout(resolve, 450));
+    
+    // Safety max timeout (800ms)
+    const safetyTimeout = setTimeout(() => {
+      if (isMounted) setIsInitialLoading(false);
+    }, 800);
+
+    const unsub = onSnapshot(
+      q, 
+      (snapshot) => {
+        const exists = !snapshot.empty;
+        setHasAnnouncements(exists);
+        try {
+          localStorage.setItem("ceibos_has_announcements", String(exists));
+        } catch {
+          // ignore storage quota error
+        }
+
+        minTimer.then(() => {
+          if (isMounted) {
+            clearTimeout(safetyTimeout);
+            setIsInitialLoading(false);
+          }
+        });
+      }, 
+      (error) => {
+        console.error("Error loading announcements:", error);
+        minTimer.then(() => {
+          if (isMounted) setIsInitialLoading(false);
+        });
+      }
+    );
+
+    return () => {
+      isMounted = false;
+      clearTimeout(safetyTimeout);
+      unsub();
+    };
   }, []);
 
   useEffect(() => {
@@ -78,6 +123,9 @@ export function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-[#333333] bg-[#f9fafb] pb-16 md:pb-0">
+      {/* Brand Preloader */}
+      <Preloader isLoading={isInitialLoading} />
+
       {/* Top Header - Responsive & Shrinks on scroll */}
       <header 
         className={`bg-white/95 backdrop-blur-md border-b border-gray-200/80 sticky top-0 z-40 transition-all duration-300 ${

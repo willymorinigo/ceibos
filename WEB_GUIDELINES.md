@@ -58,3 +58,12 @@ Este documento recopila las mejores prácticas, directrices de estructura y requ
 ## 8. Créditos y Firma de Autoría en Footer
 *   **Firma Discreta:** En el pie de página (`footer`), junto a los derechos reservados, incorporar de forma sutil el enlace de autoría (ej. `By unke.com.ar` enlazado a `https://unke.com.ar/`) con tipografía discreta, transición de color en hover y apertura segura en nueva pestaña (`target="_blank" rel="noopener noreferrer"`).
 
+## 9. Prevención de Saltos de Layout (CLS) y Pantalla de Precarga (Preloader)
+*   **Caché de Hidratación Inmediata (`localStorage`):** Para elementos de navegación o botones que dependen de consultas asíncronas a bases de datos (como la detección de si existen anuncios o no), inicializar el estado en React leyendo desde `localStorage`. Esto garantiza renderizado instantáneo en 0ms en recargas y visitas recurrentes.
+*   **Pantalla de Precarga de Marca (Brand Preloader):**
+    *   En la carga inicial en frío, mostrar un preloader elegante con el logotipo institucional y una barra de carga indeterminada sutil.
+    *   Mantenerlo activo una fracción de segundo (~450ms) mientras se resuelve la primera consulta asíncrona de Firestore y los recursos principales.
+    *   Realizar un desvanecimiento suave (`transition-opacity duration-500 ease-out`) y desmontar el componente. Al develar la interfaz, todos los botones y secciones ya ocupan su posición final, eliminando por completo los saltos bruscos de maquetación (Cumulative Layout Shift).
+    *   Incluir siempre un temporizador de seguridad (~800ms) para garantizar que la web nunca se quede bloqueada ante conexiones lentas.
+
+
