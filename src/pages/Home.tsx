@@ -19,7 +19,7 @@ import {
   MonitorPlay, 
   PiggyBank, 
   Globe, 
-  Dumbbell, 
+  Trophy, 
   Palette, 
   GraduationCap, 
   X, 
@@ -214,32 +214,30 @@ export function Home() {
           <div>
             <h2 className="text-[#22543d] font-bold uppercase tracking-wider text-2xl mb-6 border-l-4 border-[#9b1c1c] pl-3">Nuestro Colegio</h2>
             <div className="space-y-6 text-[#333333] leading-relaxed text-sm">
-              <p className="italic text-gray-600 font-medium text-base border-l-2 border-gray-200 pl-4">
-                "¿Buscas un lugar donde tus hijos aprendan, se diviertan y se preparen de verdad para el futuro?"
-              </p>
+              <div className="space-y-4 text-gray-600">
+                <p>
+                  Te damos la bienvenida al Colegio Los Ceibos. Ofrecemos una educación completa e integral acorde a los requerimientos de la sociedad actual. Queremos formar niños libres, felices y competentes con una mirada en su futuro.
+                </p>
+                <p>
+                  En todas nuestras actividades el estudiante es el eje central, tratando de proponer situaciones de aprendizaje creativas, didácticas y dinámicas.
+                </p>
+                <p>
+                  Valoramos la individualidad de cada estudiante para adecuar el aprendizaje a su propio ritmo, favoreciendo el desarrollo de seres independientes, seguros y equilibrados.
+                </p>
+              </div>
               
               <div className="space-y-4">
-                <h3 className="font-bold text-[#333333] uppercase text-xs tracking-wider">Una propuesta única en La Plata</h3>
+                <h3 className="font-bold text-[#22543d] uppercase text-sm tracking-wider">Una propuesta única en La Plata</h3>
                 <p className="text-gray-600">
-                  Te damos la bienvenida al Colegio de Los Ceibos. Ofrecemos una propuesta educativa de vanguardia con <strong>Nivel Inicial y Primario en Jornada Doble Turno</strong>. Acompañamos los primeros pasos con amor y respeto, trabajando en conjunto con las familias.
+                  Ofrecemos una propuesta educativa de vanguardia con <strong>Nivel Inicial y Primario en Jornada Doble Turno</strong>. Acompañamos los primeros pasos con amor y respeto, trabajando en conjunto con las familias.
                 </p>
               </div>
 
               <div className="space-y-4">
-                <h3 className="font-bold text-[#333333] uppercase text-xs tracking-wider">Crecimiento Continuo</h3>
+                <h3 className="font-bold text-[#22543d] uppercase text-sm tracking-wider">Crecimiento Continuo</h3>
                 <p className="text-gray-600">
                   Estamos en constante evolución para seguir acompañando el desarrollo de nuestros alumnos: <strong>¡En el año 2028 ya contaremos con el Nivel Secundario!</strong>
                 </p>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="font-bold text-[#333333] uppercase text-xs tracking-wider">Orientación Deportiva</h3>
-                <ul className="space-y-3 text-xs text-gray-600 font-medium">
-                  <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-[#9b1c1c] rounded-full flex-shrink-0"></span> Clases diarias de deportes.</li>
-                  <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-[#22543d] rounded-full flex-shrink-0"></span> Gimnasio propio equipado.</li>
-                  <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-[#9b1c1c] rounded-full flex-shrink-0"></span> Amplio campo de deportes.</li>
-                  <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-[#22543d] rounded-full flex-shrink-0"></span> Salidas educativas constantes.</li>
-                </ul>
               </div>
             </div>
           </div>
@@ -293,10 +291,10 @@ export function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-[#f9fafb] p-8 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
-              <Heart className="w-10 h-10 text-[#9b1c1c] mb-4" />
-              <h3 className="font-bold text-[#333333] mb-3">Taller de Emociones</h3>
+              <Trophy className="w-10 h-10 text-[#9b1c1c] mb-4" />
+              <h3 className="font-bold text-[#333333] mb-3">Orientación Deportiva</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Nuestros alumnos aprenden a conocerse, fortaleciendo su bienestar emocional y el respeto mutuo desde pequeños.
+                Ofrecemos a nuestros alumnos un programa deportivo diario que se desarrolla en las instalaciones del colegio y en el campo de deportes, complementado con clases de gimnasia artística en CEGALP.
               </p>
             </div>
             
@@ -318,9 +316,9 @@ export function Home() {
 
             <div className="bg-[#f9fafb] p-8 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
               <Leaf className="w-10 h-10 text-[#22543d] mb-4" />
-              <h3 className="font-bold text-[#333333] mb-3">Naturaleza y Movimiento</h3>
+              <h3 className="font-bold text-[#333333] mb-3">Naturaleza y Emociones</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Conectan con la naturaleza en nuestro campo. Además estimulan su cuerpo con yoga y gimnasia artística.
+                Conectan con la naturaleza en nuestro campo y fortalecen su bienestar emocional con clases de yoga y taller de emociones.
               </p>
             </div>
 
@@ -328,7 +326,7 @@ export function Home() {
               <Palette className="w-10 h-10 text-[#9b1c1c] mb-4" />
               <h3 className="font-bold text-[#333333] mb-3">Arte y Expresión</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Fomentamos su creatividad y autoexpresión mediante clases de <strong>teatro y música</strong>, piezas fundamentales de nuestra educación integral.
+                Fomentamos su creatividad y autoexpresión mediante clases de arte, teatro y música, piezas fundamentales de nuestra educación integral.
               </p>
             </div>
 
@@ -519,27 +517,85 @@ export function Home() {
       {/* Location Map */}
       <section className="bg-white py-12">
         <div className="max-w-7xl mx-auto px-8">
-          <div className="bg-[#f3f4f6] rounded flex flex-col md:flex-row items-center p-6 gap-6 shadow-sm border border-gray-100">
-            <div className="w-full md:w-1/2 h-64 md:h-48 rounded overflow-hidden relative border border-gray-200">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3271.748293976451!2d-57.93260242337671!3d-34.92346697284144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a2e99a21c57349%3A0x6312343737034d07!2sLos%20Ceibos%20-%20Jard%C3%ADn%20de%20Infantes%20y%20nivel%20primario!5e0!3m2!1sen!2sar!4v1714152000000!5m2!1sen!2sar" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                className="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-700"
-                title="Ubicación Los Ceibos"
-              ></iframe>
+          <div className="mb-10 text-center">
+            <h2 className="text-[#22543d] font-bold uppercase tracking-wider text-xl md:text-2xl mb-4 inline-block border-b-2 border-[#9b1c1c] pb-1">¿Querés conocernos?</h2>
+            <p className="text-lg text-gray-800 font-bold max-w-2xl mx-auto mb-2">
+              Solicitá tu entrevista
+            </p>
+            <p className="text-sm text-gray-600 font-medium">losceibosinstitucioneducativa@gmail.com</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Nivel Inicial */}
+            <div className="bg-[#f9fafb] rounded flex flex-col overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow h-full">
+              <div className="h-72 relative border-b border-gray-200">
+                <iframe 
+                  src="https://www.google.com/maps?q=Calle+67+425,+B1900+La+Plata,+Provincia+de+Buenos+Aires&output=embed"
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-700"
+                  title="Ubicación Nivel Inicial"
+                ></iframe>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <h4 className="text-[#333333] font-bold mb-4 text-lg flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-[#9b1c1c]" /> Nivel Inicial
+                </h4>
+                <div className="space-y-3 text-sm text-gray-600 mb-6">
+                  <p>C. 67 425, B1900 La Plata, Provincia de Buenos Aires</p>
+                  <p className="flex items-center gap-2 font-medium">
+                    <Phone className="w-4 h-4 text-[#22543d]" /> 221-4288041
+                  </p>
+                </div>
+                <a 
+                  href="https://wa.me/5492214288041?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20el%20Nivel%20Inicial." 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="mt-auto inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-4 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider hover:bg-[#20bd5a] transition-colors w-full"
+                >
+                  <MessageCircle className="w-4 h-4" /> WhatsApp Inicial
+                </a>
+              </div>
             </div>
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-[#333333] font-bold mb-2 text-lg">Ubicación y Contacto</h3>
-              <p className="text-sm text-gray-500 mb-2">C. 67 425, B1900 La Plata, Provincia de Buenos Aires</p>
-              <p className="text-sm text-gray-600 font-medium mb-4">losceibosinstitucioneducativa@gmail.com</p>
-              <a href="https://wa.me/5492216457046" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#22543d] text-white px-6 py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-[#1a3a2a] transition-colors">
-                Contactar Ahora
-              </a>
+
+            {/* Nivel Primario */}
+            <div className="bg-[#f9fafb] rounded flex flex-col overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow h-full">
+              <div className="h-72 relative border-b border-gray-200">
+                <iframe 
+                  src="https://www.google.com/maps?q=Calle+69+382,+B1900+La+Plata,+Provincia+de+Buenos+Aires&output=embed"
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-700"
+                  title="Ubicación Nivel Primario"
+                ></iframe>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <h4 className="text-[#333333] font-bold mb-4 text-lg flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-[#22543d]" /> Nivel Primario
+                </h4>
+                <div className="space-y-3 text-sm text-gray-600 mb-6">
+                  <p>C. 69 n382, B1900 La Plata, Provincia de Buenos Aires</p>
+                  <p className="flex items-center gap-2 font-medium">
+                    <Phone className="w-4 h-4 text-[#9b1c1c]" /> 221-6807128
+                  </p>
+                </div>
+                <a 
+                  href="https://wa.me/5492216807128?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20el%20Nivel%20Primario." 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="mt-auto inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-4 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider hover:bg-[#20bd5a] transition-colors w-full"
+                >
+                  <MessageCircle className="w-4 h-4" /> WhatsApp Primario
+                </a>
+              </div>
             </div>
           </div>
         </div>

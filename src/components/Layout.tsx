@@ -18,7 +18,7 @@ import {
 import logoImage from "../assets/images/logo_h.svg";
 
 export function Layout() {
-  const [activeSection, setActiveSection] = useState("institucional");
+  const [activeSection, setActiveSection] = useState("");
   const [hasAnnouncements, setHasAnnouncements] = useState<boolean>(() => {
     try {
       return localStorage.getItem("ceibos_has_announcements") === "true";
@@ -87,6 +87,7 @@ export function Layout() {
 
       const sections = ["institucional", "propuesta", "anuncios", "galeria", "contacto"];
       const scrollPosition = window.scrollY + 140; // Offset for header
+      let currentSection = "";
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -94,10 +95,11 @@ export function Layout() {
           const top = element.offsetTop;
           const height = element.offsetHeight;
           if (top <= scrollPosition && top + height > scrollPosition) {
-            setActiveSection(section);
+            currentSection = section;
           }
         }
       }
+      setActiveSection(currentSection);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -162,15 +164,6 @@ export function Layout() {
             >
               Propuesta
             </button>
-            {hasAnnouncements && (
-              <button 
-                onClick={() => handleNavClick("anuncios")} 
-                className={`${getNavLinkClass("anuncios")} relative`}
-              >
-                Anuncios
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-              </button>
-            )}
             <button 
               onClick={() => handleNavClick("galeria")} 
               className={getNavLinkClass("galeria")}
@@ -183,6 +176,15 @@ export function Layout() {
             >
               Contacto
             </button>
+            {hasAnnouncements && (
+              <button 
+                onClick={() => handleNavClick("anuncios")} 
+                className={`${getNavLinkClass("anuncios")} relative`}
+              >
+                Anuncios
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+              </button>
+            )}
           </nav>
 
           {/* Mobile Top Quick Action */}
@@ -303,24 +305,6 @@ export function Layout() {
           <span className="text-[10px] mt-0.5 tracking-tight">Propuesta</span>
         </button>
 
-        {hasAnnouncements && (
-          <button
-            onClick={() => handleNavClick("anuncios")}
-            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 relative ${
-              activeSection === "anuncios"
-                ? "text-[#22543d] font-bold scale-105"
-                : "text-gray-500 hover:text-gray-800"
-            }`}
-          >
-            <div className={`p-1 rounded-lg ${activeSection === "anuncios" ? "bg-green-100/70" : ""}`}>
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-3 w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
-              <span className="absolute top-1.5 right-3 w-2 h-2 bg-emerald-500 rounded-full"></span>
-            </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">Anuncios</span>
-          </button>
-        )}
-
         <button
           onClick={() => handleNavClick("galeria")}
           className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 ${
@@ -348,6 +332,24 @@ export function Layout() {
           </div>
           <span className="text-[10px] mt-0.5 font-semibold text-[#22543d] tracking-tight">WhatsApp</span>
         </button>
+
+        {hasAnnouncements && (
+          <button
+            onClick={() => handleNavClick("anuncios")}
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all duration-200 relative ${
+              activeSection === "anuncios"
+                ? "text-[#22543d] font-bold scale-105"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div className={`p-1 rounded-lg ${activeSection === "anuncios" ? "bg-green-100/70" : ""}`}>
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1.5 right-3 w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+              <span className="absolute top-1.5 right-3 w-2 h-2 bg-emerald-500 rounded-full"></span>
+            </div>
+            <span className="text-[10px] mt-0.5 tracking-tight">Anuncios</span>
+          </button>
+        )}
       </nav>
 
       {/* MOBILE BOTTOM SHEET FOR CONTACT & APP ACTIONS */}
