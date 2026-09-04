@@ -3,32 +3,46 @@ import { MessageCircle } from "lucide-react";
 import logoImage from "../assets/images/logo_h.svg";
 
 export function ContactForm() {
-  const [level, setLevel] = useState("jardin-1");
+  const [level, setLevel] = useState("jardin-1-2");
   const [shift, setShift] = useState("simple");
   const [name, setName] = useState("");
+
+  const isPrimary = level.startsWith("primaria");
+
+  const handleLevelChange = (newLevel: string) => {
+    setLevel(newLevel);
+    if (newLevel.startsWith("primaria")) {
+      setShift("completa");
+    }
+  };
 
   const handleWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
     
     const levelsMap: Record<string, string> = {
-      "jardin-1": "Jardín (Sala de 1)",
-      "jardin-2": "Jardín (Sala de 2)",
+      "jardin-1-2": "Jardín (Sala de 1 y 2)",
       "jardin-3": "Jardín (Sala de 3)",
       "jardin-4": "Jardín (Sala de 4)",
       "jardin-5": "Jardín (Sala de 5)",
-      "primaria": "Nivel Primario",
+      "primaria-1": "1° Grado (Nivel Primario)",
+      "primaria-2": "2° Grado (Nivel Primario)",
+      "primaria-3": "3° Grado (Nivel Primario)",
+      "primaria-4": "4° Grado (Nivel Primario)",
+      "primaria-5": "5° Grado (Nivel Primario)",
+      "primaria-6": "6° Grado (Nivel Primario)",
     };
 
     const shiftsMap: Record<string, string> = {
-      "simple": "Jornada Simple",
-      "completa": "Jornada Extendida / Completa",
+      "simple": "Jornada Simple (8 a 12 hs)",
+      "completa": "Jornada Extendida (8 a 16 hs)",
     };
 
-    const text = `Hola, mi nombre es ${name}. Me gustaría consultar sobre vacantes para ${levelsMap[level]} en la modalidad de ${shiftsMap[shift]}.`;
+    const currentShift = isPrimary ? "completa" : shift;
+    const text = `Hola, mi nombre es ${name}. Me gustaría consultar sobre vacantes para ${levelsMap[level]} en la modalidad de ${shiftsMap[currentShift]}.`;
     const encodedText = encodeURIComponent(text);
     
-    // Jardín: +54 9 221 428-8051, Primaria: +54 9 221 680-7128
-    const phoneNumber = level === "jardin" ? "5492214288051" : "5492216807128";
+    // Nivel Inicial: +54 9 221 428-8051, Nivel Primario: +54 9 221 680-7128
+    const phoneNumber = isPrimary ? "5492216807128" : "5492214288051";
     const url = `https://wa.me/${phoneNumber}?text=${encodedText}`;
     
     window.open(url, '_blank');
@@ -80,28 +94,49 @@ export function ContactForm() {
                   <select
                     id="level"
                     value={level}
-                    onChange={(e) => setLevel(e.target.value)}
-                    className="w-full border border-gray-200 rounded p-2.5 text-sm outline-none focus:ring-1 focus:ring-[#22543d] transition-shadow"
+                    onChange={(e) => handleLevelChange(e.target.value)}
+                    className="w-full border border-gray-200 rounded p-2.5 text-sm outline-none focus:ring-1 focus:ring-[#22543d] transition-shadow bg-white"
                   >
-                    <option value="jardin-1">Sala de 1</option>
-                    <option value="jardin-2">Sala de 2</option>
-                    <option value="jardin-3">Sala de 3</option>
-                    <option value="jardin-4">Sala de 4</option>
-                    <option value="jardin-5">Sala de 5</option>
-                    <option value="primaria">Primaria</option>
+                    <optgroup label="Nivel Inicial">
+                      <option value="jardin-1-2">Sala de 1 y 2</option>
+                      <option value="jardin-3">Sala de 3</option>
+                      <option value="jardin-4">Sala de 4</option>
+                      <option value="jardin-5">Sala de 5</option>
+                    </optgroup>
+                    <optgroup label="Nivel Primario">
+                      <option value="primaria-1">1° Grado</option>
+                      <option value="primaria-2">2° Grado</option>
+                      <option value="primaria-3">3° Grado</option>
+                      <option value="primaria-4">4° Grado</option>
+                      <option value="primaria-5">5° Grado</option>
+                      <option value="primaria-6">6° Grado</option>
+                    </optgroup>
                   </select>
                 </div>
 
                 <div>
-                  <label htmlFor="shift" className="block text-[10px] font-bold text-[#777777] uppercase mb-1">Modalidad</label>
+                  <label htmlFor="shift" className="block text-[10px] font-bold text-[#777777] uppercase mb-1">
+                    Modalidad {isPrimary && <span className="text-[#22543d] font-normal lowercase">(fija en primaria)</span>}
+                  </label>
                   <select
                     id="shift"
-                    value={shift}
+                    value={isPrimary ? "completa" : shift}
+                    disabled={isPrimary}
                     onChange={(e) => setShift(e.target.value)}
-                    className="w-full border border-gray-200 rounded p-2.5 text-sm outline-none focus:ring-1 focus:ring-[#22543d] transition-shadow"
+                    className={`w-full border border-gray-200 rounded p-2.5 text-sm outline-none transition-shadow ${
+                      isPrimary 
+                        ? "bg-gray-100 text-gray-700 cursor-not-allowed border-gray-300" 
+                        : "bg-white focus:ring-1 focus:ring-[#22543d]"
+                    }`}
                   >
-                    <option value="simple">Simple</option>
-                    <option value="completa">Extendida</option>
+                    {isPrimary ? (
+                      <option value="completa">Jornada Extendida (8 a 16 hs)</option>
+                    ) : (
+                      <>
+                        <option value="simple">Jornada Simple (8 a 12 hs)</option>
+                        <option value="completa">Jornada Extendida (8 a 16 hs)</option>
+                      </>
+                    )}
                   </select>
                 </div>
               </div>

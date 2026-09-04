@@ -226,8 +226,8 @@ export function Layout() {
           </Link>
         </div>
         <div className="flex gap-4 items-center pr-0 md:pr-24">
-          <a href="mailto:losceibosinstitucioneducativa@gmail.com" className="hover:text-[#22543d] transition-colors">
-            Mail: losceibosinstitucioneducativa@gmail.com
+          <a href="mailto:administracion@colegiolosceiboslp.com.ar" className="hover:text-[#22543d] transition-colors">
+            Mail: administracion@colegiolosceiboslp.com.ar
           </a>
         </div>
       </footer>
@@ -407,7 +407,7 @@ export function Layout() {
                   <span className="text-2xl">📚</span>
                   <div className="text-left">
                     <div className="font-bold text-sm text-[#22543d]">Consulta Nivel Primario</div>
-                    <div className="text-xs text-gray-600">Jornada Doble Turno e Idiomas</div>
+                    <div className="text-xs text-gray-600">Jornada Extendida e Idiomas</div>
                   </div>
                 </div>
                 <ArrowUpRight className="w-5 h-5 text-emerald-700" />

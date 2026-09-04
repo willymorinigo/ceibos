@@ -229,7 +229,7 @@ export function Home() {
               <div className="space-y-4">
                 <h3 className="font-bold text-[#22543d] uppercase text-sm tracking-wider">Una propuesta única en La Plata</h3>
                 <p className="text-gray-600">
-                  Ofrecemos una propuesta educativa de vanguardia con <strong>Nivel Inicial y Primario en Jornada Doble Turno</strong>. Acompañamos los primeros pasos con amor y respeto, trabajando en conjunto con las familias.
+                  Ofrecemos una propuesta educativa de vanguardia adaptada a cada etapa: en <strong>Nivel Inicial</strong> ofrecemos ambas modalidades, <strong>Jornada Simple (8 a 12 hs)</strong> y <strong>Jornada Extendida (8 a 16 hs)</strong>; mientras que en <strong>Nivel Primario</strong> contamos con <strong>Jornada Extendida obligatoria (8 a 16 hs)</strong>. Acompañamos cada paso con amor y respeto, trabajando en conjunto con las familias.
                 </p>
               </div>
 
@@ -294,7 +294,7 @@ export function Home() {
               <Trophy className="w-10 h-10 text-[#9b1c1c] mb-4" />
               <h3 className="font-bold text-[#333333] mb-3">Orientación Deportiva</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Ofrecemos a nuestros alumnos un programa deportivo diario que se desarrolla en las instalaciones del colegio y en el campo de deportes, complementado con clases de gimnasia artística en CEGALP.
+                Ofrecemos a nuestros alumnos un <strong>programa deportivo diario</strong> que se desarrolla en las instalaciones del colegio y en el campo de deportes, complementado con clases de <strong>gimnasia artística</strong> en CEGALP.
               </p>
             </div>
             
@@ -318,7 +318,7 @@ export function Home() {
               <Leaf className="w-10 h-10 text-[#22543d] mb-4" />
               <h3 className="font-bold text-[#333333] mb-3">Naturaleza y Emociones</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Conectan con la naturaleza en nuestro campo y fortalecen su bienestar emocional con clases de yoga y taller de emociones.
+                Conectan con la naturaleza en nuestro campo y fortalecen su bienestar emocional con clases de <strong>yoga</strong> y <strong>taller de emociones</strong>.
               </p>
             </div>
 
@@ -326,7 +326,7 @@ export function Home() {
               <Palette className="w-10 h-10 text-[#9b1c1c] mb-4" />
               <h3 className="font-bold text-[#333333] mb-3">Arte y Expresión</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Fomentamos su creatividad y autoexpresión mediante clases de arte, teatro y música, piezas fundamentales de nuestra educación integral.
+                Fomentamos su creatividad y autoexpresión mediante clases de <strong>arte</strong>, <strong>teatro</strong> y <strong>música</strong>, piezas fundamentales de nuestra educación integral.
               </p>
             </div>
 
@@ -522,7 +522,11 @@ export function Home() {
             <p className="text-lg text-gray-800 font-bold max-w-2xl mx-auto mb-2">
               Solicitá tu entrevista
             </p>
-            <p className="text-sm text-gray-600 font-medium">losceibosinstitucioneducativa@gmail.com</p>
+            <p className="text-sm text-gray-600 font-medium">
+              <a href="mailto:administracion@colegiolosceiboslp.com.ar" className="hover:text-[#22543d] transition-colors">
+                administracion@colegiolosceiboslp.com.ar
+              </a>
+            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -548,11 +552,17 @@ export function Home() {
                 <div className="space-y-3 text-sm text-gray-600 mb-6">
                   <p>C. 67 425, B1900 La Plata, Provincia de Buenos Aires</p>
                   <p className="flex items-center gap-2 font-medium">
-                    <Phone className="w-4 h-4 text-[#22543d]" /> 221-4288041
+                    <Phone className="w-4 h-4 text-[#9b1c1c]" /> 221-4288051
+                  </p>
+                  <p className="flex items-center gap-2 font-medium">
+                    <Mail className="w-4 h-4 text-[#9b1c1c]" />
+                    <a href="mailto:jardin@colegiolosceiboslp.com.ar" className="hover:text-[#9b1c1c] transition-colors">
+                      jardin@colegiolosceiboslp.com.ar
+                    </a>
                   </p>
                 </div>
                 <a 
-                  href="https://wa.me/5492214288041?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20el%20Nivel%20Inicial." 
+                  href="https://wa.me/5492214288051?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20el%20Nivel%20Inicial." 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="mt-auto inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-4 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider hover:bg-[#20bd5a] transition-colors w-full"
@@ -584,7 +594,13 @@ export function Home() {
                 <div className="space-y-3 text-sm text-gray-600 mb-6">
                   <p>C. 69 n382, B1900 La Plata, Provincia de Buenos Aires</p>
                   <p className="flex items-center gap-2 font-medium">
-                    <Phone className="w-4 h-4 text-[#9b1c1c]" /> 221-6807128
+                    <Phone className="w-4 h-4 text-[#22543d]" /> 221-6807128
+                  </p>
+                  <p className="flex items-center gap-2 font-medium">
+                    <Mail className="w-4 h-4 text-[#22543d]" />
+                    <a href="mailto:primaria@colegiolosceiboslp.com.ar" className="hover:text-[#22543d] transition-colors">
+                      primaria@colegiolosceiboslp.com.ar
+                    </a>
                   </p>
                 </div>
                 <a 
