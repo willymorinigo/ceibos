@@ -7,6 +7,7 @@ import {
   Lock, 
   GraduationCap, 
   Sparkles, 
+  BookOpen,
   Bell, 
   Images, 
   MessageCircle, 
@@ -311,7 +312,7 @@ export function Layout() {
           }`}
         >
           <div className={`p-1 rounded-lg ${activeSection === "propuesta" ? "bg-green-100/70" : ""}`}>
-            <Sparkles className="w-5 h-5" />
+            <BookOpen className="w-5 h-5" />
           </div>
           <span className="text-[10px] mt-0.5 tracking-tight">Propuesta</span>
         </button>
