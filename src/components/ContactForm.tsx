@@ -116,7 +116,7 @@ export function ContactForm() {
 
                 <div>
                   <label htmlFor="shift" className="block text-[10px] font-bold text-[#777777] uppercase mb-1">
-                    Modalidad {isPrimary && <span className="text-[#22543d] font-normal lowercase">(fija en primaria)</span>}
+                    Modalidad {isPrimary && <span className="text-[#9b1c1c] font-normal lowercase">(fija en primaria)</span>}
                   </label>
                   <select
                     id="shift"

@@ -26,7 +26,8 @@ import {
   MessageCircle,
   ChevronLeft,
   ChevronRight,
-  ZoomIn
+  ZoomIn,
+  Instagram
 } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -522,11 +523,25 @@ export function Home() {
             <p className="text-lg text-gray-800 font-bold max-w-2xl mx-auto mb-2">
               Solicitá tu entrevista
             </p>
-            <p className="text-sm text-gray-600 font-medium">
-              <a href="mailto:administracion@colegiolosceiboslp.com.ar" className="hover:text-[#22543d] transition-colors">
-                administracion@colegiolosceiboslp.com.ar
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm text-gray-600 font-medium">
+              <a 
+                href="mailto:administracion@colegiolosceiboslp.com.ar" 
+                className="inline-flex items-center gap-1.5 hover:text-[#22543d] transition-colors"
+              >
+                <Mail className="w-4 h-4 text-[#22543d]" />
+                <span>administracion@colegiolosceiboslp.com.ar</span>
               </a>
-            </p>
+              <span className="hidden sm:inline text-gray-300">•</span>
+              <a 
+                href="https://www.instagram.com/colegio.los.ceibos" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center gap-1.5 text-[#E1306C] hover:text-[#C13584] transition-colors font-semibold"
+              >
+                <Instagram className="w-4 h-4" />
+                <span>@colegio.los.ceibos</span>
+              </a>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -547,16 +562,16 @@ export function Home() {
               </div>
               <div className="p-6 flex flex-col flex-grow">
                 <h4 className="text-[#333333] font-bold mb-4 text-lg flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-[#9b1c1c]" /> Nivel Inicial
+                  <MapPin className="w-5 h-5 text-[#22543d]" /> Nivel Inicial
                 </h4>
                 <div className="space-y-3 text-sm text-gray-600 mb-6">
                   <p>C. 67 425, B1900 La Plata, Provincia de Buenos Aires</p>
                   <p className="flex items-center gap-2 font-medium">
-                    <Phone className="w-4 h-4 text-[#9b1c1c]" /> 221-4288051
+                    <Phone className="w-4 h-4 text-[#22543d]" /> 221-4288051
                   </p>
                   <p className="flex items-center gap-2 font-medium">
-                    <Mail className="w-4 h-4 text-[#9b1c1c]" />
-                    <a href="mailto:jardin@colegiolosceiboslp.com.ar" className="hover:text-[#9b1c1c] transition-colors">
+                    <Mail className="w-4 h-4 text-[#22543d]" />
+                    <a href="mailto:jardin@colegiolosceiboslp.com.ar" className="hover:text-[#22543d] transition-colors">
                       jardin@colegiolosceiboslp.com.ar
                     </a>
                   </p>
@@ -589,16 +604,16 @@ export function Home() {
               </div>
               <div className="p-6 flex flex-col flex-grow">
                 <h4 className="text-[#333333] font-bold mb-4 text-lg flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-[#22543d]" /> Nivel Primario
+                  <MapPin className="w-5 h-5 text-[#9b1c1c]" /> Nivel Primario
                 </h4>
                 <div className="space-y-3 text-sm text-gray-600 mb-6">
                   <p>C. 69 n382, B1900 La Plata, Provincia de Buenos Aires</p>
                   <p className="flex items-center gap-2 font-medium">
-                    <Phone className="w-4 h-4 text-[#22543d]" /> 221-6807128
+                    <Phone className="w-4 h-4 text-[#9b1c1c]" /> 221-6807128
                   </p>
                   <p className="flex items-center gap-2 font-medium">
-                    <Mail className="w-4 h-4 text-[#22543d]" />
-                    <a href="mailto:primaria@colegiolosceiboslp.com.ar" className="hover:text-[#22543d] transition-colors">
+                    <Mail className="w-4 h-4 text-[#9b1c1c]" />
+                    <a href="mailto:primaria@colegiolosceiboslp.com.ar" className="hover:text-[#9b1c1c] transition-colors">
                       primaria@colegiolosceiboslp.com.ar
                     </a>
                   </p>

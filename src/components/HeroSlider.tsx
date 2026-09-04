@@ -20,14 +20,14 @@ export function HeroSlider() {
             Tu lugar en La Plata para aprender, crecer y prepararse para el futuro. Educación integral de Jornada Doble con Nivel Inicial y Primario.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <span className="px-4 py-1.5 rounded text-xs font-bold uppercase text-white tracking-wider bg-[#9b1c1c]">
+            <span className="px-4 py-1.5 rounded text-xs font-bold uppercase text-white tracking-wider bg-[#22543d]">
               Jardín de Infantes
             </span>
-            <span className="px-4 py-1.5 rounded text-xs font-bold uppercase text-white tracking-wider bg-[#22543d]">
+            <span className="px-4 py-1.5 rounded text-xs font-bold uppercase text-white tracking-wider bg-[#9b1c1c]">
               Nivel Primario
             </span>
           </div>
-          <a href="#contacto" className="inline-block bg-[#9b1c1c] text-white px-8 py-3 rounded font-bold text-sm shadow-md hover:bg-[#7a1515] transition-colors uppercase tracking-widest">
+          <a href="#contacto" className="inline-block bg-[#808080] text-white px-8 py-3 rounded font-bold text-sm shadow-md hover:bg-gray-600 transition-colors uppercase tracking-widest">
             Consultar Vacantes
           </a>
         </div>
