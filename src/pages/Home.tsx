@@ -631,6 +631,26 @@ export function Home() {
           </div>
         </div>
       </section>
+
+      {/* Trabajá con nosotros */}
+      <section className="bg-[#f9fafb] py-16 border-t border-gray-100">
+        <div className="max-w-4xl mx-auto px-8 text-center">
+          <h2 className="text-[#22543d] font-bold uppercase tracking-wider text-xl md:text-2xl mb-4 inline-block border-b-2 border-[#9b1c1c] pb-1">
+            Trabajá con nosotros
+          </h2>
+          <p className="text-gray-600 mb-8 max-w-2xl mx-auto font-medium">
+            Envianos tu CV. Si tu perfil se ajusta a alguna de nuestras búsquedas,<br />
+            nos pondremos en contacto. Gracias.
+          </p>
+          <a 
+            href="mailto:administracion@colegiolosceiboslp.com.ar"
+            className="inline-flex items-center justify-center gap-2 bg-[#22543d] text-white px-8 py-3 rounded text-sm font-bold uppercase tracking-wider hover:bg-[#1a402e] transition-colors shadow-md"
+          >
+            <Mail className="w-4 h-4" />
+            Enviar CV
+          </a>
+        </div>
+      </section>
     </div>
   );
 }
